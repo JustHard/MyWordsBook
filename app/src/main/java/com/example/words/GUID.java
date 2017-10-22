@@ -2,9 +2,6 @@ package com.example.words;
 
 import java.util.UUID;
 
-/**
- * Created by 杨浩 on 2016/9/19.
- */
 public class GUID {
     public static String getGUID(){
         // 创建 GUID 对象

@@ -4,39 +4,26 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.words.wordcontract.Words;
 
-/**
- * Created by 杨浩 on 2016/9/19.
- */
 public class WordsDBHelper extends SQLiteOpenHelper {
-
-    private final static String DATABASE_NAME = "WordsDb";//数据库名字
-    private final static int DATABASE_VERSION = 1;//数据库版本
-
-    /**
-     *建表SQL
-     * 表： Words.Word.TABLE_NAME
-     * 该表中共4个字段：_ID,COLUMN_NAME_WORD,COLUMN_NAME_MEANING,COLUMN_NAME_SAMPLE
-     */
-
+    //数据库的名字
+    private final static String DATABASE_NAME = "WordsDb";
+    //数据库的版本
+    private final static int DATABASE_VERSION = 1;
     private final static String SQL_CREATE_DATABASE = "CREATE TABLE " + Words.Word.TABLE_NAME + " (" +
-            Words.Word._ID + " VARCHAR(32) PRIMARY KEY NOT NULL," +
+            Words.Word._ID + " INTEGER PRIMARY KEY NOT NULL," +
             Words.Word.COLUMN_NAME_WORD + " TEXT UNIQUE NOT NULL,"+
             Words.Word.COLUMN_NAME_MEANING + " TEXT,"
             + Words.Word.COLUMN_NAME_SAMPLE + " TEXT)";
-
-    //删表SQL
+    //删除表SQL
     private final static String SQL_DELETE_DATABASE = "DROP TABLE IF EXISTS " + Words.Word.TABLE_NAME;
-
     public WordsDBHelper(Context context) {
-
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //创建数据库
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        //创建数据库
         sqLiteDatabase.execSQL(SQL_CREATE_DATABASE);
     }
 

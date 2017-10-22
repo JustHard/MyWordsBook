@@ -4,45 +4,16 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.words.wordcontract.Words;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-
-/**
- * Created by 杨浩 on 2016/9/19.
- */
 public class WordDetailFragment extends Fragment {
-    private static final String TAG="myTag";
     public static final String ARG_ID = "id";
-
     private String mID;//单词主键
     private OnFragmentInteractionListener mListener;//Fragment所在的Activity
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param wordID Parameter 1.
-     * @return A new instance of fragment WordDetailFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static WordDetailFragment newInstance(String wordID) {
         WordDetailFragment fragment = new WordDetailFragment();
@@ -65,20 +36,15 @@ public class WordDetailFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_word_detail, container, false);
-        Log.v(TAG,mID);
-
         WordsDB wordsDB=WordsDB.getWordsDB();
-
         if(wordsDB!=null && mID!=null){
-            TextView textViewWord=(TextView)view.findViewById(R.id.word);
-            TextView textViewWordMeaning=(TextView)view.findViewById(R.id.wordmeaning);
-            TextView textViewWordSample=(TextView)view.findViewById(R.id.wordsample);
-
+            TextView textViewWord=(TextView)view.findViewById(R.id.textViewWord1);
+            TextView textViewWordMeaning=(TextView)view.findViewById(R.id.textViewMeaning1);
+            TextView textViewWordSample=(TextView)view.findViewById(R.id.textViewSample1);
             Words.WordDescription item=wordsDB.getSingleWord(mID);
             if(item!=null){
                 textViewWord.setText(item.word);
@@ -90,7 +56,6 @@ public class WordDetailFragment extends Fragment {
                 textViewWordMeaning.setText("");
                 textViewWordSample.setText("");
             }
-
         }
         return view;
     }
@@ -115,20 +80,9 @@ public class WordDetailFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onWordDetailClick(Uri uri);
-
     }
 
 }

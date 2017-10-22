@@ -1,15 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
-    <item android:id="@+id/action_search"
-        android:title="查找"
-        android:orderInCategory="100" app:showAsAction="never" />
-
-    <item android:id="@+id/action_insert"
-        android:title="新增"
-        android:orderInCategory="100" app:showAsAction="never" />
     <item
-        android:id="@+id/action_online"
-        android:title="在线查询"/>
+        android:id="@+id/action_onlineSearch"
+        android:title="在线查询"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_Search"
+        android:title="查找单词"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_Insert"
+        android:title="新增单词"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_Help"
+        android:title="帮助选项"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_Exit"
+        android:title="退出应用"
+        app:showAsAction="never"/>
 </menu>

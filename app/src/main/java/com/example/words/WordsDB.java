@@ -3,29 +3,18 @@ package com.example.words;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.UserDictionary;
-import android.util.Log;
-
-import com.example.words.wordcontract.Words;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by 杨浩 on 2016/9/19.
- */
+
 public class WordsDB {
-    private static final String TAG = "myTag";
-
     private static WordsDBHelper mDbHelper;
-
-    //采用单例模式
     private static WordsDB instance=new WordsDB();
     public static WordsDB getWordsDB(){
         return WordsDB.instance;
     }
-
     private WordsDB() {
         if (mDbHelper == null) {
             mDbHelper = new WordsDBHelper(WordsApplication.getContext());
@@ -40,11 +29,9 @@ public class WordsDB {
     //获得单个单词的全部信息
     public Words.WordDescription getSingleWord(String id) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         String sql = "select * from words where _ID=?";
         Cursor cursor = db.rawQuery(sql, new String[]{id});
         if (cursor.moveToNext()) {
-            ;
             Words.WordDescription item = new Words.WordDescription(cursor.getString(cursor.getColumnIndex(Words.Word._ID)),
                     cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD)),
                     cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING)),
@@ -52,27 +39,21 @@ public class WordsDB {
             return item;
         }
         return null;
-
     }
 
     //得到全部单词列表
     public ArrayList<Map<String, String>> getAllWords() {
         if (mDbHelper == null) {
-            Log.v(TAG, "WordsDB::getAllWords()");
             return null;
         }
-
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         String[] projection = {
                 Words.Word._ID,
                 Words.Word.COLUMN_NAME_WORD
         };
-
-        //排序
+        //升序排序
         String sortOrder =
-                Words.Word.COLUMN_NAME_WORD + " DESC";
-
+                Words.Word.COLUMN_NAME_WORD + " ASC";
         Cursor c = db.query(
                 Words.Word.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
@@ -82,7 +63,6 @@ public class WordsDB {
                 null,                                     // don't filter by row groups
                 sortOrder                                 // The sort order
         );
-
         return ConvertCursor2WordList(c);
     }
 
@@ -100,18 +80,15 @@ public class WordsDB {
 
     //使用insert方法增加单词
     public void Insert(String strWord, String strMeaning, String strSample) {
-
-        //Gets the data repository in write mode*/
+        //获取数据库的写权限
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        // Create a new map of values, where column names are the keys
+        //创建一个新的值映射，其中列名是键
         ContentValues values = new ContentValues();
         values.put(Words.Word._ID, GUID.getGUID());
         values.put(Words.Word.COLUMN_NAME_WORD, strWord);
         values.put(Words.Word.COLUMN_NAME_MEANING, strMeaning);
         values.put(Words.Word.COLUMN_NAME_SAMPLE, strSample);
-
-        // Insert the new row, returning the primary key value of the new row
+        // 插入新行，返回新行的主键值
         long newRowId;
         newRowId = db.insert(
                 Words.Word.TABLE_NAME,
@@ -122,8 +99,7 @@ public class WordsDB {
     //使用Sql语句删除单词
     public void DeleteUseSql(String strId) {
         String sql = "delete from words where _id='" + strId + "'";
-
-        //Gets the data repository in write mode*/
+        //Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         db.execSQL(sql);
     }
@@ -138,11 +114,8 @@ public class WordsDB {
     //使用Sql语句查找
     public ArrayList<Map<String, String>> SearchUseSql(String strWordSearch) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String sql = "select * from words where word like ? order by word desc";
+        String sql = "select * from words where word like ? order by word ASC";
         Cursor c = db.rawQuery(sql, new String[]{"%" + strWordSearch + "%"});
-
         return ConvertCursor2WordList(c);
     }
-
 }
